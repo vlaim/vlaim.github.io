@@ -7,6 +7,7 @@
 #endif
 
 # Terminates program if input date is incorrect
+
 function isDate
 {
 	# Other:
@@ -52,35 +53,12 @@ then
 	rm "$fn"
 fi
 
-a=$(find . -type f -newer dstamp -print | head -n 100)
+a=$(find . -type f \! -newer dstamp -print | head -n 100)
 n=$(echo "$a"|wc -l) # number of files
 echo $a >> "$fn"
 echo "---------------------------------" >> "$fn"
 echo "$n file(s) found" >> "$fn"
 
 rm dstamp #revome temporary
+
 exit 0 
-
-
-#IFS="oldifs"
-
-#Find
-#tmp="/root -${RANDOM}${RANDOM}"
-#tmp = "/"
-
-#touch -t "${y}${m}${d}0000" "tmp"
-
-#a=$(find $(pwd) -type f -newer "$tmp" -print)
-
-#n=$(echo "$a" |wc -l)
-
-#if test -z "$a"
-#then
-#n=0
-#fi
-
-#a=$(echo "$a" | head -n 100)
-
-#rm "$tmp"
-
-#exit 0
