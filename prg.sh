@@ -3,7 +3,7 @@
 #ifdef __USAGE
 #created by Vladislav Alexeyev
 #November, 24 2014
-#SYNTAX: prg 
+#SYNTAX: prg [path]
 #endif
 
 # Terminates program if input date is incorrect
@@ -23,6 +23,15 @@ function isDate
 }
 
 
+#if argument is not defined - use current path
+
+path=$1
+
+if test -z "$1"
+then
+	path=$(pwd)
+fi
+
 oldIFS="$IFS" #internal fields separator
 IFS="-"
 
@@ -30,7 +39,6 @@ echo "Enter date (format dd-mm-yyyy)"
 read d m y
 isDate $d $m $y
 
-echo "${y}${m}${d}0000"
 touch -t "${y}${m}${d}0000" dstamp #create timestamp
 
 echo "Enter filename (find.txt as default)"
@@ -54,7 +62,7 @@ then
 	rm "$fn"
 fi
 
-a=$(find . -type f \! -newer dstamp -not -name dstamp -print | head -n 100) #exclude dstamp(!)
+a=$(find $path -type f \! -newer dstamp -not -name dstamp -print | head -n 100) #exclude dstamp(!)
 n=$(echo "$a" | wc -l) # number of files
 
 
@@ -70,6 +78,6 @@ echo $a >> "$fn"
 echo "---------------------------------" >> "$fn"
 echo "$n file(s) found" >> "$fn"
 
-rm dstamp #revome temporary
+rm dstamp #remove temporary
 
 exit 0 
