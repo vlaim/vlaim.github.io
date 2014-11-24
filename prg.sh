@@ -19,8 +19,7 @@ detectPlatform(){
 	then
 	   platform='freebsd'
 	fi
-	
-	echo $platform
+
 }
 
 # Terminates program if input date is incorrect
