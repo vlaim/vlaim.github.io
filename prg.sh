@@ -6,15 +6,38 @@
 #SYNTAX: prg [path]
 #endif
 
+
+#Delects platform [Linux or freebsd]
+
+detectPlatform(){
+	platform='unknown'
+	unamestr=$(uname)
+	if [ "$unamestr" = 'Linux' ]
+	then
+	   platform='linux'
+	elif [ "$unamestr" = 'FreeBSD' ]
+	then
+	   platform='freebsd'
+	fi
+	
+	echo $platform
+}
+
 # Terminates program if input date is incorrect
 
-function isDate
-{
-	# Other:
-	#date "+%d/%m/%Y" -d "$d/$m/$y" 2>1 > /dev/null
-	# MAC OS X: 
-	date -f "%m/%d/%Y" -j "$2/$1/$3" >/dev/null 2>&1
+isDate(){
+	detectPlatform
+	
+	if [ $platform = 'linux' ]
+	then
+		date "+%m/%d/%Y" -d "$2/$1/$3" 2>1 > /dev/null
+	elif [$platform = 'freebsd' ]
+	then
+		date -f "%m/%d/%Y" -j "$2/$1/$3" >/dev/null 2>&1
+	fi
+	
 	is_valid=$?
+	
 	if [ $is_valid -eq 1 ]
 	then
 		echo "Incorrect date. Program terminated!"
@@ -31,6 +54,7 @@ if test -z "$1"
 then
 	path=$(pwd)
 fi
+
 
 oldIFS="$IFS" #internal fields separator
 IFS="-"
