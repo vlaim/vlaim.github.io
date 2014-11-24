@@ -3,20 +3,17 @@
 #ifdef __USAGE
 #created by Vladislav Alexeyev
 #November, 24 2014
-#SYNTAX: prg_find [path]
+#SYNTAX: prg 
 #endif
-
-
 
 # Terminates program if input date is incorrect
 function isDate
 {
-	# MAC OS X: 
+	# Other:
 	#date "+%d/%m/%Y" -d "$d/$m/$y" 2>1 > /dev/null
-	#Other: 
-	date -f "%m/%d/%Y" -j "$d/$m/$y" >/dev/null 2>&1
+	# MAC OS X: 
+	date -f "%m/%d/%Y" -j "$2/$1/$3" >/dev/null 2>&1
 	is_valid=$?
-	echo $is_valid
 	if [ $is_valid -eq 1 ]
 	then
 		echo "Incorrect date. Program terminated!"
@@ -24,58 +21,66 @@ function isDate
 	fi
 }
 
-#Enter dates to search
 
-oldIFS="$IFS"
-IFS=":"
+oldIFS="$IFS" #internal fields separator
+IFS="-"
 
-#Data write
-echo "Enter date (format dd:mm:yyyy)"
+echo "Enter date (format dd-mm-yyyy)"
 read d m y
-isDate d m y
+isDate $d $m $y
 
-IFS="oldifs"
+echo "${y}${m}${d}0000"
+touch -t "${y}${m}${d}0000" dstamp #create timestamp
 
-#Find
-#tmp="/root -${RANDOM}${RANDOM}"
-tmp = "/"
-
-touch -t "${y}${m}${d}0000" "tmp"
-
-a=$(find $(pwd) -type f -newer "$tmp" -print)
-
-n=$(echo "$a" |wc -l)
-
-if test -z "$a"
-then
-n=0
-fi
-
-a=$(echo "$a" | head -n 100)
- 
-echo -n "Enter filename (FIND.TXT as default)"
+echo "Enter filename (find.txt as default)"
 read fn
+
 if test -z "$fn"
 then
-fn="FIND.TXT"
+	fn="find.txt"
 fi
 
 if test -f "$fn"
 then
-echo -n "$fn exist. Rewrite? y/n: "
-read yn
+	echo "$fn exist. Overwrite it? All exist data will be erased y/[n]: "
+	read yn
 fi
 
-if test "$yn"="y" || "$yn"="Y"
+# overwrite file:
+if [ "$yn" = "y" ]
 then
-echo "$a" > "$fn"
-else
-echo "$a" >> "$fn"
+	rm "$fn"
 fi
 
-echo "-----------------------------------------" >> "$fn"
-echo "$n files found" >> "$fn"
+a=$(find . -type f -newer dstamp -print | head -n 100)
+n=$(echo "$a"|wc -l) # number of files
+echo $a >> "$fn"
+echo "---------------------------------" >> "$fn"
+echo "$n file(s) found" >> "$fn"
 
-rm "$tmp"
+rm dstamp #revome temporary
+exit 0 
 
-exit 0
+
+#IFS="oldifs"
+
+#Find
+#tmp="/root -${RANDOM}${RANDOM}"
+#tmp = "/"
+
+#touch -t "${y}${m}${d}0000" "tmp"
+
+#a=$(find $(pwd) -type f -newer "$tmp" -print)
+
+#n=$(echo "$a" |wc -l)
+
+#if test -z "$a"
+#then
+#n=0
+#fi
+
+#a=$(echo "$a" | head -n 100)
+
+#rm "$tmp"
+
+#exit 0
