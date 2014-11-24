@@ -48,13 +48,24 @@ then
 fi
 
 # overwrite file:
+
 if [ "$yn" = "y" ]
 then
 	rm "$fn"
 fi
 
-a=$(find . -type f \! -newer dstamp -print | head -n 100)
-n=$(echo "$a"|wc -l) # number of files
+a=$(find . -type f \! -newer dstamp -not -name dstamp -print | head -n 100) #exclude dstamp(!)
+n=$(echo "$a" | wc -l) # number of files
+
+
+#if empty - 0 files
+
+if test -z "$a"
+then
+	n=0
+fi
+
+
 echo $a >> "$fn"
 echo "---------------------------------" >> "$fn"
 echo "$n file(s) found" >> "$fn"
