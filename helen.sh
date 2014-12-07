@@ -2,7 +2,7 @@
 
 #ifdef __USAGE
 #created by Helen Bogdanova
-#November, 24 2014
+#December, 7 2014
 #SYNTAX: helen [path]
 #endif
 
@@ -10,9 +10,7 @@
 
 # Terminates program if input date is incorrect
 
-isDate(){
-	detectPlatform
-	
+isDate(){	
 	date "+%m/%d/%Y" -d "$2/$1/$3" 2>1 > /dev/null
 	is_valid=$?
 	
