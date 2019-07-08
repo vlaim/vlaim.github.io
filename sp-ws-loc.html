@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title>ws playground</title>	
+
+	<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+	<div id="sandbox" style="width:100%; height:80%; overflow-y: scroll;"></div>
+
+	<input value='{"MachineIdentifier":"123456789012", "Version":"0.0.1", "AuthenticationType":"Client", "Login":"cvbbvcvcbvcb2", "Password":"appkey"}' style="margin-top: 10px; width:100%;" id="text"> 
+	<button style="padding:10px; width: 200px; margin:25 auto; display: block;" id="send">SEND</button>
+
+	<script>
+
+		$(function(){
+			$('#text').focus();
+
+			$('body').keydown(function (e) {
+			    if (e.keyCode === 13) { 
+			        send()
+			    }
+			});
+
+			$('#send').click(send);
+
+		});
+
+
+		//var WS_ADDRESS = 'wss://wss.swiatprzesylek.pl-local';
+		var WS_ADDRESS = 'ws://swiatprzesylek.pl-local:8080'
+		//var WS_ADDRESS = 'ws://5.252.229.56:8080';
+
+		function send(){
+			var text = $('#text').val();
+			log(text, 'green');
+			conn.send(text);
+			$('#text').val('');
+		}
+		function log(text, color){
+			$sandbox = $('#sandbox');
+			var date = new Date().toUTCString();
+		    $sandbox.html($sandbox.html()+"<span style='color:"+color+"'>["+date+"] "+text+"</span><br/>"); 
+		    $("#sandbox").animate({ scrollTop: $("#sandbox").height() }, 1000);
+		}
+		var conn = new WebSocket(WS_ADDRESS);
+
+		conn.onopen = function(e) {
+		    log("Connection established @ "+WS_ADDRESS, 'purple');
+		};
+
+		conn.onerror = function(e) {
+		    log(e.data, 'red');
+		};
+		 
+		conn.onmessage = function(e) {
+			log(e.data, 'blue');
+		};
+		
+	</script>
+</body>
+
+</html>
