@@ -12,14 +12,20 @@
 
 	<div id="sandbox" style="width:100%; height:80%; overflow-y: scroll;"></div>
 
-	<input value='{"MachineIdentifier":"123456789012", "Version":"0.0.1", "AuthenticationType":"Client", "Login":"cvbbvcvcbvcb2", "Password":"appkey"}' style="margin-top: 10px; width:100%;" id="text"> 
+	<div>
+		<a href="javascript:insertCreds(WAREHOUSE_CREDS)">Warehouse</a> | <a href="javascript:insertCreds(CLIENT_CREDS)">Client</a>
+	</div>
+	<input value='' style="margin-top: 10px; width:100%;" id="text"> 
 	<button style="padding:10px; width: 200px; margin:25 auto; display: block;" id="send">SEND</button>
 
 	<script>
 
+		var CLIENT_CREDS = '{"MachineIdentifier":"123456789012", "Version":"0.0.1", "AuthenticationType":"Client", "Login":"cvbbvcvcbvcb2", "Password":"1a35de838d614174aa3c17993c0934f37ddc532f8abdedeb01c7d70607232d57"}';
+		var WAREHOUSE_CREDS = '{"MachineIdentifier":"9876543210", "Version":"0.0.1", "AuthenticationType":"Warehouse"}';
+
+
 		$(function(){
 			$('#text').focus();
-
 			$('body').keydown(function (e) {
 			    if (e.keyCode === 13) { 
 			        send()
@@ -27,7 +33,7 @@
 			});
 
 			$('#send').click(send);
-
+			insertCreds(WAREHOUSE_CREDS);
 		});
 
 
@@ -60,6 +66,11 @@
 		conn.onmessage = function(e) {
 			log(e.data, 'blue');
 		};
+
+		function insertCreds(value)
+		{
+			$('#text').val(value);
+		}
 		
 	</script>
 </body>
