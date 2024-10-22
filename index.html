@@ -1,74 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5; url=https://alexeyev.me">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="/manifest.json">
-  </head>
-  <body>
-    <main>
-        <h1>Welcome to My Website</h1>  
-    </main>
-  </body>
-
-  <button onclick="addToHomeScreen()">Add to Home Screen</button> 
-
-
-  <script type="text/javascript">
-
-
-  window.addEventListener('beforeinstallprompt', function(event) { 
-
-        alert('beforeinstallprompt fired'); 
-       
-        event.preventDefault(); 
-       
-        window.deferredPrompt = event; 
-
-        alert(window.deferredPrompt);
- 
-        return false; 
-      });
-
-   
-    
-    function addToHomeScreen() { 
-
-
-      if (window.navigator.standalone === true) { 
-
-        return false; 
-      } else if (window.matchMedia('(display-mode: standalone)').matches) { 
-
-
-        return false; 
-      } 
-     
-      const prompt = window.deferredPrompt; 
-
-      alert(window.deferredPrompt)
-     
-      if (prompt) { 
-        prompt.prompt(); 
-     
-        prompt.userChoice.then(function(choiceResult) { 
-          if (choiceResult.outcome === 'accepted') { 
-            console.log('User accepted the A2HS prompt'); 
-          } else { 
-            console.log('User dismissed the A2HS prompt'); 
-          } 
-     
-          window.deferredPrompt = null; 
-        }); 
-      } 
-     
-      return true; 
-    } 
-
-   
-  
-  </script>
+    <title>Redirecting...</title>
+</head>
+<body>
+    <p>If you are not redirected automatically, follow this <a href="https://alexeyev.me">link to the external site</a>.</p>
+</body>
 </html>
